@@ -40,12 +40,12 @@
 <section>
     <h2 class="text-xl font-bold mb-4">نظرات</h2>
     {% if comments %}
-    <div class="space-y-4">
+    <div class="space-y-6">
         {% for comment in comments %}
-        <div id="comment-{{ comment.id }}" class="bg-white border rounded-lg p-4 scroll-mt-4">
-            <div class="flex items-center justify-between mb-2">
+        <div id="comment-{{ comment.id }}" class="group bg-white border border-gray-100 rounded-xl p-4 scroll-mt-4">
+            <div class="flex items-center justify-between mb-1">
                 <span class="font-bold">{{ comment.author_name }}</span>
-                <span class="text-xs text-gray-500">{{ comment.created_at|jalali }}</span>
+                <span class="text-xs text-gray-400">{{ comment.created_at|jalali }}</span>
             </div>
             <p class="text-gray-800">{{ comment.body }}</p>
 
@@ -54,15 +54,15 @@
             {% if comment.thread %}
             <div class="mt-4 mr-6 pr-4 border-r-2 border-gray-200 space-y-4">
                 {% for reply in comment.thread %}
-                <div id="comment-{{ reply.id }}" class="scroll-mt-4">
+                <div id="comment-{{ reply.id }}" class="group bg-gray-50 border border-gray-100 rounded-xl p-3 scroll-mt-4">
                     {% if reply.parent_id != comment.id %}
-                    <a href="#comment-{{ reply.parent.id }}" class="block text-xs text-gray-400 hover:text-gray-600 mb-1">
+                    <a href="#comment-{{ reply.parent.id }}" class="block bg-white border-r-4 border-blue-300 rounded-md px-3 py-1.5 mb-2 text-xs text-gray-500 hover:text-gray-700 transition-colors">
                         پاسخ به {{ reply.parent.author_name }}: {{ reply.parent.body|truncatewords:6 }}
                     </a>
                     {% endif %}
                     <div class="flex items-center justify-between mb-1">
                         <span class="font-bold text-sm">{{ reply.author_name }}</span>
-                        <span class="text-xs text-gray-500">{{ reply.created_at|jalali }}</span>
+                        <span class="text-xs text-gray-400">{{ reply.created_at|jalali }}</span>
                     </div>
                     <p class="text-gray-800 text-sm">{{ reply.body }}</p>
 
