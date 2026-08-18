@@ -42,44 +42,31 @@
     {% if comments %}
     <div class="space-y-4">
         {% for comment in comments %}
-        <div class="bg-white border rounded-lg p-4">
+        <div id="comment-{{ comment.id }}" class="bg-white border rounded-lg p-4 scroll-mt-4">
             <div class="flex items-center justify-between mb-2">
                 <span class="font-bold">{{ comment.author_name }}</span>
                 <span class="text-xs text-gray-500">{{ comment.created_at|jalali }}</span>
             </div>
             <p class="text-gray-800">{{ comment.body }}</p>
 
-            <details class="mt-2" {% if comment.id == reply_target_id %}open{% endif %}>
-                <summary class="cursor-pointer text-sm text-blue-600 w-fit">پاسخ</summary>
-                <form method="post" class="mt-3 space-y-2">
-                    {% csrf_token %}
-                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
-                    {% if comment.id == reply_target_id %}
-                    {% for field in reply_form %}
-                    <div>
-                        {{ field }}
-                        {% if field.errors %}
-                        <p class="text-red-600 text-xs mt-1">{{ field.errors|striptags }}</p>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                    {% else %}
-                    <input type="text" name="author_name" class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="نام شما (اختیاری)">
-                    <textarea name="body" rows="2" class="w-full border rounded-lg px-3 py-2 text-sm" placeholder="پاسخ خود را بنویسید"></textarea>
-                    {% endif %}
-                    <button type="submit" class="bg-gray-900 text-white rounded-lg px-3 py-1.5 text-xs">ارسال پاسخ</button>
-                </form>
-            </details>
+            {% include "rooms/_reply_form.html" with target=comment %}
 
-            {% if comment.replies.all %}
-            <div class="mt-4 mr-6 pr-4 border-r-2 border-gray-200 space-y-3">
-                {% for reply in comment.replies.all %}
-                <div>
+            {% if comment.thread %}
+            <div class="mt-4 mr-6 pr-4 border-r-2 border-gray-200 space-y-4">
+                {% for reply in comment.thread %}
+                <div id="comment-{{ reply.id }}" class="scroll-mt-4">
+                    {% if reply.parent_id != comment.id %}
+                    <a href="#comment-{{ reply.parent.id }}" class="block text-xs text-gray-400 hover:text-gray-600 mb-1">
+                        پاسخ به {{ reply.parent.author_name }}: {{ reply.parent.body|truncatewords:6 }}
+                    </a>
+                    {% endif %}
                     <div class="flex items-center justify-between mb-1">
                         <span class="font-bold text-sm">{{ reply.author_name }}</span>
                         <span class="text-xs text-gray-500">{{ reply.created_at|jalali }}</span>
                     </div>
                     <p class="text-gray-800 text-sm">{{ reply.body }}</p>
+
+                    {% include "rooms/_reply_form.html" with target=reply %}
                 </div>
                 {% endfor %}
             </div>

@@ -1,9 +1,8 @@
 from django.contrib import messages
-from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CommentForm
-from .models import Category, Comment, Work
+from .models import Category, Work
 
 
 def home(request):
@@ -26,7 +25,7 @@ def work_detail(request, slug):
         parent_id = request.POST.get('parent_id')
         parent = None
         if parent_id:
-            parent = get_object_or_404(work.comments, id=parent_id, parent__isnull=True)
+            parent = get_object_or_404(work.comments, id=parent_id)
 
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -43,10 +42,7 @@ def work_detail(request, slug):
         else:
             top_form = form
 
-    replies = Comment.objects.filter(is_approved=True).order_by('created_at')
-    comments = work.comments.filter(is_approved=True, parent__isnull=True) \
-        .order_by('-created_at') \
-        .prefetch_related(Prefetch('replies', queryset=replies))
+    comments = _build_comment_threads(work)
 
     return render(request, 'rooms/work_detail.html', {
         'work': work,
@@ -55,3 +51,32 @@ def work_detail(request, slug):
         'reply_form': reply_form,
         'reply_target_id': reply_target_id,
     })
+
+
+def _build_comment_threads(work):
+    """Group approved comments by root ancestor, flattening any reply depth to one level."""
+    all_comments = list(
+        work.comments.filter(is_approved=True).select_related('parent').order_by('created_at')
+    )
+
+    roots = []
+    threads = {}
+    root_of = {}
+
+    for comment in all_comments:
+        if comment.parent_id is None:
+            roots.append(comment)
+            root_of[comment.id] = comment.id
+            threads[comment.id] = []
+        else:
+            root_id = root_of.get(comment.parent_id)
+            if root_id is None:
+                continue
+            root_of[comment.id] = root_id
+            threads[root_id].append(comment)
+
+    roots.sort(key=lambda c: c.created_at, reverse=True)
+    for comment in roots:
+        comment.thread = threads[comment.id]
+
+    return roots
