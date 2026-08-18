@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}اتاق‌های گفتگوی فرهنگ و هنر{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        vazir: ['Vazirmatn', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="font-vazir bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+    <header class="bg-white border-b">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <span class="text-lg font-bold">اتاق‌های گفتگوی فرهنگ و هنر</span>
+            <nav>
+                <a href="#" class="text-gray-700 hover:text-gray-900">دسته‌بندی‌ها</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-6 flex-1 w-full">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-white border-t">
+        <div class="max-w-4xl mx-auto px-4 py-4 text-center text-sm text-gray-500">
+            اتاق‌های گفتگوی فرهنگ و هنر
+        </div>
+    </footer>
+</body>
+</html>

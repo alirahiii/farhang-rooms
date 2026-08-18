@@ -1,5 +1,5 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
 def home(request):
-    return HttpResponse("سایت کار می‌کند")
+    return render(request, 'rooms/home.html')
