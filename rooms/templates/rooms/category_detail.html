@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-bold mb-6">{{ category.name }}</h1>
+
+{% if works %}
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    {% for work in works %}
+    {% include "rooms/_work_card.html" %}
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-gray-500">هنوز اثری در این دسته ثبت نشده است.</p>
+{% endif %}
+{% endblock %}

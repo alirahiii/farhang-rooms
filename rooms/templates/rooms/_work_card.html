@@ -1,0 +1,5 @@
+<a href="{% url 'work_detail' work.slug %}" class="block bg-white border rounded-lg p-4 hover:shadow-md transition">
+    <h3 class="font-bold mb-1">{{ work.title }}</h3>
+    <p class="text-sm text-gray-600 mb-1">{{ work.creator }}</p>
+    <span class="inline-block text-xs bg-gray-100 rounded-full px-3 py-1 text-gray-700">{{ work.category.name }}</span>
+</a>

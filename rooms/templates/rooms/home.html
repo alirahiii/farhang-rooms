@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section>
+<section id="categories">
     <h1 class="text-xl font-bold mb-4">دسته‌بندی‌ها</h1>
     {% if categories %}
     <div class="flex flex-wrap gap-3">
         {% for category in categories %}
-        <span class="bg-white border rounded-full px-4 py-2 text-sm">{{ category.name }}</span>
+        <a href="{% url 'category_detail' category.slug %}" class="bg-white border rounded-full px-4 py-2 text-sm hover:bg-gray-50 transition">{{ category.name }}</a>
         {% endfor %}
     </div>
     {% else %}
@@ -19,11 +19,7 @@
     {% if latest_works %}
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {% for work in latest_works %}
-        <a href="{% url 'work_detail' work.slug %}" class="block bg-white border rounded-lg p-4 hover:shadow-md transition">
-            <h3 class="font-bold mb-1">{{ work.title }}</h3>
-            <p class="text-sm text-gray-600 mb-1">{{ work.creator }}</p>
-            <span class="inline-block text-xs bg-gray-100 rounded-full px-3 py-1 text-gray-700">{{ work.category.name }}</span>
-        </a>
+        {% include "rooms/_work_card.html" %}
         {% endfor %}
     </div>
     {% else %}

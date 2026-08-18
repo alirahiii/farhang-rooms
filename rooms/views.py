@@ -15,6 +15,15 @@ def home(request):
     })
 
 
+def category_detail(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+    works = category.works.filter(is_published=True).select_related('category').order_by('-created_at')
+    return render(request, 'rooms/category_detail.html', {
+        'category': category,
+        'works': works,
+    })
+
+
 def work_detail(request, slug):
     work = get_object_or_404(Work, slug=slug, is_published=True)
 
