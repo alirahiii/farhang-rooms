@@ -78,4 +78,22 @@
     <p class="text-gray-500">هنوز نظری ثبت نشده است.</p>
     {% endif %}
 </section>
+
+<script>
+    (function () {
+        var STORAGE_KEY = 'roomsAuthorName';
+        var savedName = localStorage.getItem(STORAGE_KEY);
+
+        document.querySelectorAll('input[name="author_name"]').forEach(function (input) {
+            if (savedName && !input.value) {
+                input.value = savedName;
+            }
+            input.closest('form').addEventListener('submit', function () {
+                if (input.value.trim()) {
+                    localStorage.setItem(STORAGE_KEY, input.value.trim());
+                }
+            });
+        });
+    })();
+</script>
 {% endblock %}
