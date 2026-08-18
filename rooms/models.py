@@ -30,7 +30,7 @@ class Comment(models.Model):
     author_name = models.CharField(max_length=100)
     body = models.TextField()
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='replies')
-    is_approved = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
