@@ -19,11 +19,11 @@
     {% if latest_works %}
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {% for work in latest_works %}
-        <div class="bg-white border rounded-lg p-4">
+        <a href="{% url 'work_detail' work.slug %}" class="block bg-white border rounded-lg p-4 hover:shadow-md transition">
             <h3 class="font-bold mb-1">{{ work.title }}</h3>
             <p class="text-sm text-gray-600 mb-1">{{ work.creator }}</p>
             <span class="inline-block text-xs bg-gray-100 rounded-full px-3 py-1 text-gray-700">{{ work.category.name }}</span>
-        </div>
+        </a>
         {% endfor %}
     </div>
     {% else %}
