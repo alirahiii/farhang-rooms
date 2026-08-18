@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 
 from .forms import CommentForm
 from .models import Category, Work
@@ -34,7 +35,8 @@ def work_detail(request, slug):
             comment.parent = parent
             comment.save()
             messages.success(request, 'نظر شما با موفقیت ثبت شد.')
-            return redirect('work_detail', slug=work.slug)
+            url = reverse('work_detail', kwargs={'slug': work.slug}) + f'#comment-{comment.id}'
+            return redirect(url)
 
         if parent:
             reply_form = form
