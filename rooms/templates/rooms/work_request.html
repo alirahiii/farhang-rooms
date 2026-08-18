@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}پیشنهاد اثر جدید{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-bold mb-6">پیشنهاد اثر جدید</h1>
+
+<form method="post" class="bg-white border border-gray-100 rounded-xl p-4 space-y-3 max-w-lg">
+    {% csrf_token %}
+    {% for field in form %}
+    <div>
+        <label for="{{ field.id_for_label }}" class="block text-sm text-gray-700 mb-1">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+        <p class="text-red-600 text-xs mt-1">{{ field.errors|striptags }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="bg-gray-900 text-white rounded-lg px-4 py-2 text-sm">ثبت درخواست</button>
+</form>
+{% endblock %}

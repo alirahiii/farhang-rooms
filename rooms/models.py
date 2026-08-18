@@ -25,6 +25,27 @@ class Work(models.Model):
         return self.title
 
 
+class WorkRequest(models.Model):
+    STATUS_PENDING = 'pending'
+    STATUS_ADDED = 'added'
+    STATUS_REJECTED = 'rejected'
+    STATUS_CHOICES = [
+        (STATUS_PENDING, 'در انتظار'),
+        (STATUS_ADDED, 'اضافه شد'),
+        (STATUS_REJECTED, 'رد شد'),
+    ]
+
+    title = models.CharField('نام اثر', max_length=200)
+    creator = models.CharField('نام پدیدآورنده', max_length=200)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='work_requests', verbose_name='دسته‌بندی')
+    description = models.TextField('توضیح', blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
 class Comment(models.Model):
     work = models.ForeignKey(Work, on_delete=models.CASCADE, related_name='comments')
     author_name = models.CharField(max_length=100)

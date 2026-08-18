@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from .forms import CommentForm
+from .forms import CommentForm, WorkRequestForm
 from .models import Category, Work
 
 
@@ -13,6 +13,19 @@ def home(request):
         'categories': categories,
         'latest_works': latest_works,
     })
+
+
+def work_request(request):
+    if request.method == 'POST':
+        form = WorkRequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'درخواست شما با موفقیت ثبت شد.')
+            return redirect('work_request')
+    else:
+        form = WorkRequestForm()
+
+    return render(request, 'rooms/work_request.html', {'form': form})
 
 
 def category_detail(request, slug):

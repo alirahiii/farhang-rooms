@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Comment, Work
+from .models import Category, Comment, Work, WorkRequest
 
 
 @admin.register(Category)
@@ -17,3 +17,8 @@ class WorkAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_filter = ['is_approved']
+
+
+@admin.register(WorkRequest)
+class WorkRequestAdmin(admin.ModelAdmin):
+    list_filter = ['status']
